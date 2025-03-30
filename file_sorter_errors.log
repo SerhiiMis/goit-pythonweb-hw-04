@@ -1,0 +1,2 @@
+2025-03-30 12:09:24,795:ERROR:Failed to read folder C:\Projects\repositories\source_folder: 'async for' requires an object with __aiter__ method, got coroutine
+2025-03-30 12:10:42,114:ERROR:Failed to read folder C:\Projects\repositories\goit-pythonweb-hw-04\source_folder: 'async for' requires an object with __aiter__ method, got coroutine

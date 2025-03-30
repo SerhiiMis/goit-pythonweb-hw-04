@@ -7,6 +7,7 @@ import argparse
 import logging
 from pathlib import Path
 from typing import List
+import os
 
 # Configure error logging
 logging.basicConfig(filename='file_sorter_errors.log',
@@ -17,12 +18,14 @@ logging.basicConfig(filename='file_sorter_errors.log',
 async def read_folder(source: Path) -> List[Path]:
     """Recursively collect all file paths in the source directory."""
     files = []
+    loop = asyncio.get_event_loop()
     try:
-        async for entry in aiofiles.os.scandir(source):
+        entries = await loop.run_in_executor(None, lambda: list(os.scandir(source)))
+        for entry in entries:
             path = source / entry.name
-            if await aiofiles.ospath.isdir(path):
+            if entry.is_dir():
                 files.extend(await read_folder(path))
-            elif await aiofiles.ospath.isfile(path):
+            elif entry.is_file():
                 files.append(path)
     except Exception as e:
         logging.error(f"Failed to read folder {source}: {e}")
